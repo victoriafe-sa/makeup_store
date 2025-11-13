@@ -35,39 +35,37 @@ Para executar este projeto, você precisará ter o **JDK 17** (Java Development 
 
 Não é necessário ter o Apache Maven instalado, pois o projeto utiliza o Maven Wrapper (`mvnw`), que baixará a versão correta automaticamente.
 
-## Como Executar o Projeto
+## Como Executar o Projeto (Usando um IDE)
 
-1.  Clone este repositório para sua máquina local.
+Este projeto é um projeto Maven Spring Boot padrão, então a forma mais fácil de executá-lo é através de um Ambiente de Desenvolvimento Integrado (IDE) como IntelliJ IDEA, VS Code (com o "Extension Pack for Java") ou Eclipse.
 
-2.  Abra um terminal ou prompt de comando e navegue até a pasta raiz do projeto (onde o arquivo `mvnw` está localizado).
+1.  **Importe o Projeto:**
+    * Abra o seu IDE.
+    * Use a opção "Open Project" (ou "Import Project") e selecione a pasta raiz `makeup-store`.
+    * O IDE irá reconhecer o arquivo `pom.xml` e baixar automaticamente as dependências (pode levar um momento).
 
-3.  Execute o comando a seguir para iniciar a aplicação usando o Maven Wrapper:
+2.  **Localize a Classe Principal:**
+    * No seu explorador de arquivos, navegue até a classe principal do Spring Boot:
+        `src/main/java/com/example/makeup_store/MakeUpWorldApplication.java`.
 
-      * **Para Linux/Mac:**
-        ```bash
-        ./mvnw spring-boot:run
-        ```
-      * **Para Windows (CMD/PowerShell):**
-        ```bash
-        mvnw.cmd spring-boot:run
-        ```
-
-4.  O Maven baixará as dependências e iniciará o servidor Spring Boot.
+3.  **Execute a Aplicação:**
+    * Clique com o botão direito no arquivo `MakeUpWorldApplication.java` ou diretamente no método `main` dentro dele.
+    * Selecione a opção **"Run 'MakeUpWorldApplication.main()'"** (ou uma opção similar de execução).
+    * O IDE irá compilar o projeto e iniciar o servidor Spring Boot embutido.
 
 ## Acessando a Aplicação
 
 Quando a aplicação estiver em execução, você pode acessá-la pelo seu navegador:
 
-  * **Página Principal (Loja):**
+* **Página Principal (Loja):**
     `http://localhost:8080/`
 
-  * **Relatório de Pedidos:**
+* **Relatório de Pedidos:**
     `http://localhost:8080/pedidos`
 
-  * **Console do Banco H2 (para Debug):**
+* **Console do Banco H2 (para Debug):**
     A aplicação expõe o console do banco H2, permitindo que você visualize os dados em memória (produtos, clientes, pedidos).
-
-      * **URL:** `http://localhost:8080/h2-console`
-      * **JDBC URL (use este valor no login):** `jdbc:h2:mem:makeupdb`
-      * **Username:** `sa`
-      * **Password:** (deixe em branco)
+    * **URL:** `http://localhost:8080/h2-console`
+    * **JDBC URL (use este valor no login):** `jdbc:h2:mem:makeupdb`
+    * **Username:** `sa`
+    * **Password:** (deixe em branco)
