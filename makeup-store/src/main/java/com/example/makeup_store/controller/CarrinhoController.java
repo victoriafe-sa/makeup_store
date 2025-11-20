@@ -43,7 +43,6 @@ public class CarrinhoController {
         return "redirect:/produtos";
     }
 
-    // NOVO: Endpoint para atualizar quantidade (+ ou -)
     @PostMapping("/atualizar/{id}")
     public String atualizarQuantidade(@PathVariable Integer id, @RequestParam int quantidade) {
         carrinho.atualizarQuantidade(id, quantidade);
@@ -62,6 +61,24 @@ public class CarrinhoController {
         if (carrinho.getItens().isEmpty()) {
             return "redirect:/carrinho";
         }
+
+        // --- NOVA VALIDAÇÃO DE ESTOQUE ---
+        for (ItemPedido item : carrinho.getItens()) {
+            // Busca o produto atualizado no banco para checar o estoque real
+            Produto produtoNoBanco = produtoRepository.findById(item.getProduto().getId()).orElse(null);
+            
+            if (produtoNoBanco == null || produtoNoBanco.getEstoque() < item.getQuantidade()) {
+                int estoqueDisponivel = (produtoNoBanco != null) ? produtoNoBanco.getEstoque() : 0;
+                
+                // Adiciona mensagem de erro e recarrega a página do carrinho
+                model.addAttribute("erro", "Estoque insuficiente para: " + item.getProduto().getNome() + 
+                                           ". Apenas " + estoqueDisponivel + " unidades disponíveis.");
+                model.addAttribute("itens", carrinho.getItens());
+                model.addAttribute("total", carrinho.getTotal());
+                return "carrinho"; // Retorna para a view do carrinho em vez de redirecionar
+            }
+        }
+        // ---------------------------------
 
         Cliente cliente = clienteRepository.findByEmail(userDetails.getUsername()).orElseThrow();
         
