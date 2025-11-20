@@ -1,71 +1,145 @@
-# MakeUp World (Loja de Maquiagem)
+# 💄 MakeUp World
 
-Este é um projeto de aplicação web para uma loja de maquiagem online, desenvolvido com Spring Boot. A aplicação permite listar produtos, selecionar um cliente e criar um pedido, validando o estoque disponível em tempo real.
+Bem-vindo ao **MakeUp World**, uma aplicação completa de **E-commerce** para uma loja de maquiagem, desenvolvida com **Java** e **Spring Boot**.
 
-## Arquitetura e Tecnologias Utilizadas
+O projeto simula uma experiência real de compra online, incluindo:
 
-O projeto segue uma arquitetura MVC (Model-View-Controller) e utiliza as seguintes tecnologias:
+* Autenticação de usuários
+* Carrinho de compras persistente na sessão
+* Validação de estoque em tempo real
+* Painel administrativo para gestão de produtos
 
-  * **Linguagem:** **Java 17**.
-  * **Framework Principal:** **Spring Boot**.
-  * **Build Tool:** **Apache Maven** (utilizando o Maven Wrapper).
-  * **Banco de Dados:**
-      * **Spring Data JPA** para persistência de dados.
-      * **H2 Database** como banco de dados em memória.
-      * O schema do banco é atualizado automaticamente na inicialização (`ddl-auto=update`).
-  * **Front-end (View):**
-      * **Thymeleaf** como template engine para renderizar as páginas HTML no servidor.
-      * **Tailwind CSS** (via CDN) para estilização.
-  * **Web:**
-      * **Spring Web (MVC)** para criar os controllers e endpoints da aplicação.
-  * **Utilitários:**
-      * **Lombok** para reduzir boilerplate (getters, setters, construtores) nos modelos.
+---
 
-## Funcionalidades Principais
+## 🚀 Tecnologias Utilizadas
 
-  * **Listagem de Produtos:** A página inicial (`/`) exibe todos os produtos disponíveis no banco de dados.
-  * **Criação de Pedidos:** Um formulário na página inicial permite selecionar um cliente e as quantidades desejadas de cada produto.
-  * **Validação de Estoque:** Ao tentar criar um pedido (`/criar-pedido`), o `LojaService` verifica se há estoque suficiente para cada item. Se o estoque for insuficiente, uma `EstoqueInsuficienteException` é lançada e uma mensagem de erro é exibida no front-end.
-  * **Relatório de Pedidos:** A página `/pedidos` exibe um relatório de todos os pedidos já processados.
-  * **Inicialização de Dados:** A classe `DataInitializer` (um `CommandLineRunner`) popula o banco de dados com produtos e clientes iniciais assim que a aplicação é iniciada.
+* **Backend:** Java 17, Spring Boot 3.2
+* **Segurança:** Spring Security (Autenticação e Autorização baseada em Roles)
+* **Banco de Dados:** H2 Database (Em memória, para fácil execução e testes)
+* **Persistência:** Spring Data JPA
+* **Frontend:** Thymeleaf
+* **Estilização:** Tailwind CSS (via CDN)
+* **Ferramentas:** Maven, Lombok
 
-## Pré-requisitos
+---
 
-Para executar este projeto, você precisará ter o **JDK 17** (Java Development Kit) ou superior instalado em sua máquina.
+## ✨ Funcionalidades
 
-Não é necessário ter o Apache Maven instalado, pois o projeto utiliza o Maven Wrapper (`mvnw`), que baixará a versão correta automaticamente.
+### 👤 Área Pública e do Cliente
 
-## Como Executar o Projeto (Usando um IDE)
+#### **Catálogo de Produtos**
 
-Este projeto é um projeto Maven Spring Boot padrão, então a forma mais fácil de executá-lo é através de um Ambiente de Desenvolvimento Integrado (IDE) como IntelliJ IDEA, VS Code (com o "Extension Pack for Java") ou Eclipse.
+* Visualização de produtos com imagens, preços e status de estoque.
+* Barra de pesquisa para filtrar produtos por nome.
 
-1.  **Importe o Projeto:**
-    * Abra o seu IDE.
-    * Use a opção "Open Project" (ou "Import Project") e selecione a pasta raiz `makeup-store`.
-    * O IDE irá reconhecer o arquivo `pom.xml` e baixar automaticamente as dependências (pode levar um momento).
+#### **Autenticação**
 
-2.  **Localize a Classe Principal:**
-    * No seu explorador de arquivos, navegue até a classe principal do Spring Boot:
-        `src/main/java/com/example/makeup_store/MakeUpWorldApplication.java`.
+* Login e Logout seguros.
+* Cadastro de novos usuários.
 
-3.  **Execute a Aplicação:**
-    * Clique com o botão direito no arquivo `MakeUpWorldApplication.java` ou diretamente no método `main` dentro dele.
-    * Selecione a opção **"Run 'MakeUpWorldApplication.main()'"** (ou uma opção similar de execução).
-    * O IDE irá compilar o projeto e iniciar o servidor Spring Boot embutido.
+#### **Carrinho de Compras**
 
-## Acessando a Aplicação
+* Adicionar itens ao carrinho.
+* Ajustar quantidades ou remover itens.
+* Cálculo automático de subtotal e total.
+* Validação de estoque no checkout.
 
-Quando a aplicação estiver em execução, você pode acessá-la pelo seu navegador:
+#### **Perfil do Usuário**
 
-* **Página Principal (Loja):**
-    `http://localhost:8080/`
+* Edição de dados cadastrais (Nome, Endereço, Senha).
+* Histórico de pedidos com detalhes das compras anteriores.
 
-* **Relatório de Pedidos:**
-    `http://localhost:8080/pedidos`
+---
 
-* **Console do Banco H2 (para Debug):**
-    A aplicação expõe o console do banco H2, permitindo que você visualize os dados em memória (produtos, clientes, pedidos).
-    * **URL:** `http://localhost:8080/h2-console`
-    * **JDBC URL (use este valor no login):** `jdbc:h2:mem:makeupdb`
-    * **Username:** `sa`
-    * **Password:** (deixe em branco)
+### 🛡️ Painel Administrativo (Role: `ADMIN`)
+
+#### **Dashboard**
+
+* Visão geral com total de vendas, produtos cadastrados e status do sistema.
+
+#### **Gestão de Produtos (CRUD)**
+
+* Adicionar novos produtos (com URL de imagem).
+* Editar dados de produtos existentes (preço, estoque, nome, imagem).
+* Excluir produtos.
+
+#### **Monitoramento**
+
+* Visualização dos últimos pedidos realizados na loja.
+
+---
+
+## 🛠️ Como Executar o Projeto
+
+### ✔️ Pré-requisitos
+
+* Java **JDK 17** ou superior instalado.
+
+---
+
+### ▶️ Passo a Passo
+
+1. Clone ou baixe o repositório.
+2. Abra o terminal na pasta raiz do projeto (`makeup_store/makeup-store`).
+3. Execute a aplicação usando o **Maven Wrapper**:
+
+#### **Windows**
+
+```bash
+./mvnw.cmd spring-boot:run
+```
+
+#### **Linux/Mac**
+
+```bash
+./mvnw spring-boot:run
+```
+
+4. Acesse no navegador:
+   **[http://localhost:8080](http://localhost:8080)**
+
+---
+
+## 🔑 Credenciais de Teste
+
+O sistema inicializa automaticamente o banco de dados (arquivo `DataInitializer.java`) com usuários e produtos de exemplo.
+
+| Perfil            | Email                                     | Senha  | Acesso                                        |
+| ----------------- | ----------------------------------------- | ------ | --------------------------------------------- |
+| **Administrador** | [admin@email.com](mailto:admin@email.com) | 123456 | Acesso total + Dashboard (`/admin/dashboard`) |
+| **Cliente**       | [user@email.com](mailto:user@email.com)   | 123456 | Compras e Perfil (`/perfil`)                  |
+
+> Você também pode criar uma nova conta clicando em **Cadastrar** na tela de login.
+
+---
+
+## 🗄️ Acesso ao Banco de Dados (H2 Console)
+
+1. Acesse: **[http://localhost:8080/h2-console](http://localhost:8080/h2-console)**
+2. Configure:
+
+```
+JDBC URL: jdbc:h2:mem:makeupdb
+User Name: sa
+Password: 
+```
+
+3. Clique em **Connect**.
+
+---
+
+## 📂 Estrutura do Projeto
+
+```
+makeup-store/
+│
+├── controller/       # Controladores MVC (Admin, Carrinho, Home, Perfil)
+├── model/            # Entidades JPA (Cliente, Produto, Pedido, ItemPedido) + Carrinho (Session Scope)
+├── repository/       # Interfaces Spring Data JPA
+├── service/          # Regras de negócio (Processamento de pedidos)
+├── config/           # Configurações de segurança (SecurityConfig)
+├── templates/        # Páginas HTML (Thymeleaf)
+└── ...
+```
+
+Desenvolvido como exemplo organizado de arquitetura **Spring Boot MVC**.
