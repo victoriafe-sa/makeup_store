@@ -1,12 +1,9 @@
 package com.example.makeup_store.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 
 @Entity
 @Data
@@ -19,6 +16,11 @@ public class Cliente {
     private Integer id;
     
     private String nome;
+    
+    @Column(unique = true)
     private String email;
+    
+    private String senha;
     private String endereco;
+    private String role; // "USER" ou "ADMIN"
 }

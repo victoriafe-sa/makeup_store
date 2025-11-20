@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body class="bg-gray-50 font-sans flex flex-col min-h-screen">
+    
+    <nav th:replace="~{layout :: navbar}"></nav>
+
+    <main class="flex-grow container mx-auto px-6 py-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-8">Minha Conta</h1>
+
+        <!-- Mensagem de Sucesso -->
+        <div th:if="${param.sucesso}" class="bg-green-100 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-6">
+            <i class="fas fa-check-circle mr-2"></i> Dados atualizados com sucesso!
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Cartão de Dados do Usuário (Agora com Formulário de Edição) -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 mb-6">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center text-pink-600 text-2xl">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-900" th:text="${cliente.nome}">Nome do Usuário</h2>
+                            <p class="text-gray-500 text-sm" th:text="${cliente.role == 'ADMIN' ? 'Administrador' : 'Cliente'}">Cliente</p>
+                        </div>
+                    </div>
+
+                    <hr class="my-4 border-gray-100">
+                    
+                    <h3 class="font-bold text-gray-700 mb-4">Editar Meus Dados</h3>
+                    <form th:action="@{/perfil/editar}" method="post" class="space-y-4">
+                        <div>
+                            <label class="text-xs font-bold text-gray-400 uppercase">Nome Completo</label>
+                            <input type="text" name="nome" th:value="${cliente.nome}" required class="w-full mt-1 px-3 py-2 border rounded-lg text-sm focus:outline-none focus:border-pink-500">
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-gray-400 uppercase">Email (Não editável)</label>
+                            <input type="text" th:value="${cliente.email}" disabled class="w-full mt-1 px-3 py-2 border bg-gray-100 rounded-lg text-sm text-gray-500 cursor-not-allowed">
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-gray-400 uppercase">Endereço</label>
+                            <input type="text" name="endereco" th:value="${cliente.endereco}" required class="w-full mt-1 px-3 py-2 border rounded-lg text-sm focus:outline-none focus:border-pink-500">
+                        </div>
+                         <div>
+                            <label class="text-xs font-bold text-gray-400 uppercase">Nova Senha</label>
+                            <input type="password" name="senha" placeholder="Deixe em branco para manter" class="w-full mt-1 px-3 py-2 border rounded-lg text-sm focus:outline-none focus:border-pink-500">
+                        </div>
+                        <button type="submit" class="w-full bg-pink-600 text-white py-2 rounded-lg hover:bg-pink-700 transition font-medium text-sm">
+                            Salvar Alterações
+                        </button>
+                    </form>
+                    
+                    <div class="mt-6 pt-6 border-t">
+                         <form th:action="@{/logout}" method="post">
+                            <button type="submit" class="w-full border border-red-200 text-red-600 py-2 rounded-lg hover:bg-red-50 transition font-medium">
+                                Sair da Conta
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lista de Pedidos (Mantida Igual) -->
+            <div class="lg:col-span-2">
+                <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                    <i class="fas fa-shopping-bag text-pink-600"></i> Meus Pedidos
+                </h2>
+
+                <div th:if="${#lists.isEmpty(pedidos)}" class="bg-white p-10 rounded-xl shadow-sm text-center">
+                    <p class="text-gray-500 mb-4">Você ainda não fez nenhum pedido.</p>
+                    <a href="/produtos" class="text-pink-600 font-semibold hover:underline">Ir as compras</a>
+                </div>
+
+                <div th:unless="${#lists.isEmpty(pedidos)}" class="space-y-4">
+                    <!-- Loop de Pedidos -->
+                    <div th:each="pedido : ${pedidos}" class="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition">
+                        <div class="bg-gray-50 px-6 py-4 flex flex-wrap justify-between items-center border-b border-gray-100 gap-4">
+                            <div>
+                                <span class="text-xs text-gray-500 uppercase font-bold">Pedido</span>
+                                <p class="font-bold text-gray-900" th:text="|#${pedido.id}|">#123</p>
+                            </div>
+                            <div>
+                                <span class="text-xs text-gray-500 uppercase font-bold">Data</span>
+                                <p class="text-sm text-gray-700" th:text="${#temporals.format(pedido.dataHora, 'dd/MM/yyyy HH:mm')}">01/01/2024</p>
+                            </div>
+                            <div>
+                                <span class="text-xs text-gray-500 uppercase font-bold">Total</span>
+                                <p class="font-bold text-pink-600" th:text="|R$ ${#numbers.formatDecimal(pedido.total, 1, 2, 'COMMA')}|">R$ 100,00</p>
+                            </div>
+                            <div>
+                                <span class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700" th:text="${pedido.status}">PROCESSADO</span>
+                            </div>
+                        </div>
+                        
+                        <div class="p-6">
+                            <p class="text-sm font-semibold text-gray-600 mb-3">Itens comprados:</p>
+                            <ul class="space-y-2">
+                                <li th:each="item : ${pedido.itens}" class="flex justify-between text-sm text-gray-600 border-b border-gray-50 last:border-0 pb-2 last:pb-0">
+                                    <span>
+                                        <span class="font-bold text-gray-900" th:text="${item.quantidade} + 'x'">1x</span> 
+                                        <span th:text="${item.produto.nome}">Produto</span>
+                                    </span>
+                                    <span th:text="|R$ ${#numbers.formatDecimal(item.getPrecoTotal(), 1, 2, 'COMMA')}|">R$ 50,00</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>

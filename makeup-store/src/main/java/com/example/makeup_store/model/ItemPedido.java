@@ -26,13 +26,12 @@ public class ItemPedido {
     private int quantidade;
     private double precoUnitario; // Guarda o preço no momento da compra
 
+    // ✅ ESTE CONSTRUTOR É ESSENCIAL PARA O CÓDIGO FUNCIONAR
     public ItemPedido(Produto produto, int quantidade) {
-        if (quantidade <= 0) {
-            throw new IllegalArgumentException("Quantidade deve ser maior que zero");
-        }
         this.produto = produto;
         this.quantidade = quantidade;
-        this.precoUnitario = produto.getPreco();
+        // Pega o preço atual do produto para salvar no histórico do pedido
+        this.precoUnitario = (produto != null) ? produto.getPreco() : 0.0;
     }
     
     public double getPrecoTotal() {

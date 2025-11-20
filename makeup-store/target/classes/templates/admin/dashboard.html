@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body class="bg-gray-100 font-sans flex flex-col min-h-screen">
+    
+    <nav th:replace="~{layout :: navbar}"></nav>
+
+    <main class="flex-grow container mx-auto px-6 py-8">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Painel Administrativo</h1>
+            <span class="bg-purple-100 text-purple-800 text-sm font-bold px-3 py-1 rounded-full">Admin Mode</span>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-pink-500">
+                <p class="text-gray-500 text-sm font-medium uppercase">Total de Vendas</p>
+                <p class="text-3xl font-bold text-gray-800 mt-2" th:text="${totalPedidos}">0</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-purple-500">
+                <p class="text-gray-500 text-sm font-medium uppercase">Produtos Cadastrados</p>
+                <p class="text-3xl font-bold text-gray-800 mt-2" th:text="${totalProdutos}">0</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-blue-500">
+                <p class="text-gray-500 text-sm font-medium uppercase">Status do Sistema</p>
+                <p class="text-xl font-bold text-green-600 mt-2"><i class="fas fa-check-circle"></i> Online</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            
+            <!-- Gerenciar Produtos -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-6">📦 Gerenciar Estoque</h2>
+                
+                <form th:action="@{/admin/produtos/salvar}" method="post" class="bg-gray-50 p-4 rounded-lg mb-6 border border-gray-200">
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <input type="text" name="nome" placeholder="Nome do Produto" required class="px-3 py-2 rounded border focus:outline-none focus:border-pink-500">
+                        <input type="number" step="0.01" name="preco" placeholder="Preço (R$)" required class="px-3 py-2 rounded border focus:outline-none focus:border-pink-500">
+                    </div>
+                    <div class="mb-4">
+                        <input type="text" name="imagemUrl" placeholder="URL da Imagem (https://...)" class="w-full px-3 py-2 rounded border focus:outline-none focus:border-pink-500">
+                    </div>
+                    <div class="flex gap-4">
+                        <input type="number" name="estoque" placeholder="Qtd Estoque" required class="w-32 px-3 py-2 rounded border focus:outline-none focus:border-pink-500">
+                        <button type="submit" class="flex-1 bg-purple-600 text-white rounded font-medium hover:bg-purple-700 transition">Adicionar Produto</button>
+                    </div>
+                </form>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left text-gray-600">
+                        <thead class="bg-gray-100 uppercase text-xs">
+                            <tr>
+                                <th class="px-4 py-3">ID</th>
+                                <th class="px-4 py-3">Nome</th>
+                                <th class="px-4 py-3">Estoque</th>
+                                <th class="px-4 py-3 text-right">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="produto : ${produtos}" class="border-b hover:bg-gray-50">
+                                <td class="px-4 py-3" th:text="${produto.id}">1</td>
+                                <td class="px-4 py-3 font-medium text-gray-900" th:text="${produto.nome}">Batom</td>
+                                <td class="px-4 py-3">
+                                    <span th:class="${produto.estoque < 5 ? 'text-red-600 font-bold' : ''}" th:text="${produto.estoque}">10</span>
+                                </td>
+                                <td class="px-4 py-3 text-right space-x-2">
+                                    <a th:href="@{/admin/produtos/editar/{id}(id=${produto.id})}" class="text-blue-600 hover:underline font-semibold">Editar</a>
+                                    <a th:href="@{/admin/produtos/excluir/{id}(id=${produto.id})}" class="text-red-500 hover:underline" onclick="return confirm('Tem certeza?')">Excluir</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Pedidos Recentes -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-6">📄 Últimos Pedidos</h2>
+                <div class="space-y-4">
+                    <div th:each="pedido : ${pedidosRecentes}" class="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
+                        <div>
+                            <p class="font-bold text-gray-800" th:text="|Pedido #${pedido.id}|">#1</p>
+                            <p class="text-xs text-gray-500" th:text="${pedido.cliente.nome}">Cliente</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-pink-600 font-bold" th:text="|R$ ${#numbers.formatDecimal(pedido.total, 1, 2, 'COMMA')}|">R$ 100</p>
+                            <span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full" th:text="${pedido.status}">PROCESSADO</span>
+                        </div>
+                    </div>
+                    <p th:if="${#lists.isEmpty(pedidosRecentes)}" class="text-gray-500 text-center py-4">Nenhum pedido realizado.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body class="bg-gray-50 font-sans flex flex-col min-h-screen">
+    
+    <nav th:replace="~{layout :: navbar}"></nav>
+
+    <!-- Hero Section -->
+    <div class="bg-pink-100">
+        <div class="container mx-auto px-6 py-16 md:py-24 flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-8 md:mb-0 text-center md:text-left">
+                <h1 class="text-5xl md:text-6xl font-extrabold text-gray-900 leading-tight mb-4">
+                    Realce sua <span class="text-pink-600">Beleza</span> Única.
+                </h1>
+                <p class="text-lg text-gray-600 mb-8">Os melhores produtos de maquiagem para todos os estilos e tons de pele.</p>
+                <a href="/produtos" class="bg-pink-600 text-white text-lg font-semibold px-8 py-3 rounded-full shadow-lg hover:bg-pink-700 transition transform hover:scale-105">
+                    Ver Produtos
+                </a>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- Destaques -->
+    <main class="flex-grow container mx-auto px-6 py-12">
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">✨ Favoritos da Semana</h2>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+            <div th:each="produto : ${destaques}" class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition duration-300 group">
+                
+                <div class="h-48 overflow-hidden bg-gray-200 relative">
+                     <img th:if="${produto.imagemUrl != null}" th:src="${produto.imagemUrl}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                     <div th:if="${produto.imagemUrl == null}" class="w-full h-full flex items-center justify-center text-gray-400 text-4xl group-hover:bg-pink-50 transition">
+                        <i class="fas fa-pump-soap"></i>
+                    </div>
+                </div>
+                
+                <div class="p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-1" th:text="${produto.nome}">Nome Produto</h3>
+                    <p class="text-pink-600 font-bold text-xl" th:text="|R$ ${#numbers.formatDecimal(produto.preco, 1, 2, 'COMMA')}|">R$ 99,00</p>
+                    <form th:action="@{/carrinho/adicionar/{id}(id=${produto.id})}" method="post" class="mt-4">
+                        <input type="hidden" name="quantidade" value="1">
+                        <button type="submit" class="w-full bg-gray-900 text-white py-2 rounded-lg hover:bg-pink-600 transition text-sm font-medium">
+                            Adicionar ao Carrinho
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-12">
+            <a href="/produtos" class="text-pink-600 font-semibold hover:underline">Ver todos os produtos <i class="fas fa-arrow-right ml-1"></i></a>
+        </div>
+    </main>
+
+    <footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>

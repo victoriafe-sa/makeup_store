@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body class="bg-gray-50 font-sans flex items-center justify-center min-h-screen">
+    
+    <div class="bg-white p-10 rounded-3xl shadow-xl text-center max-w-lg w-full mx-4">
+        <div class="w-24 h-24 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6 text-5xl">
+            <i class="fas fa-check"></i>
+        </div>
+        
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">Pedido Confirmado!</h1>
+        <p class="text-gray-600 mb-8">Obrigado por comprar na MakeUp World.</p>
+        
+        <div class="bg-gray-50 p-6 rounded-xl mb-8 text-left">
+            <p class="text-sm text-gray-500 mb-1">Número do Pedido</p>
+            <p class="text-xl font-bold text-gray-900 mb-4" th:text="|#${pedido.id}|">#12345</p>
+            
+            <p class="text-sm text-gray-500 mb-1">Tipo de Frete</p>
+            <p class="font-medium text-gray-900 mb-4" th:text="${freteTipo}">Padrão</p>
+            
+            <div class="border-t pt-4 flex justify-between items-center">
+                <span class="text-gray-600">Total Pago</span>
+                <span class="text-xl font-bold text-pink-600" th:text="|R$ ${#numbers.formatDecimal(pedido.total, 1, 2, 'COMMA')}|">R$ 100,00</span>
+            </div>
+        </div>
+        
+        <a href="/" class="block w-full bg-gray-900 text-white py-3 rounded-xl font-semibold hover:bg-gray-800 transition">
+            Voltar para a Loja
+        </a>
+    </div>
+
+</body>
+</html>
