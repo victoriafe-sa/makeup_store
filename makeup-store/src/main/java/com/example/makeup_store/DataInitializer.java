@@ -23,6 +23,7 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        // Se não houver produtos, cria alguns de exemplo
         if (produtoRepository.count() == 0) {
             // Adicionando produtos com URLs de imagens reais
             produtoRepository.save(new Produto(null, "Batom Matte Ruby Woo", 99.00, 50, "https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=400&q=80"));
@@ -39,6 +40,7 @@ public class DataInitializer implements CommandLineRunner {
             produtoRepository.save(new Produto(null, "Gloss Labial Rosé", 49.90, 80, "https://m.media-amazon.com/images/I/71HavgLEtfL._AC_SX679_.jpg?auto=format&fit=crop&w=400&q=80"));
         }
 
+        // Cria usuários padrão para teste
         if (clienteRepository.count() == 0) {
             clienteRepository.save(new Cliente(null, "Administrador", "admin@email.com", passwordEncoder.encode("123456"), "Loja Sede", "ADMIN"));
             clienteRepository.save(new Cliente(null, "Cliente Teste", "user@email.com", passwordEncoder.encode("123456"), "Rua das Flores, 10", "USER"));

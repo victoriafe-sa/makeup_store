@@ -11,6 +11,23 @@
             <span class="bg-purple-100 text-purple-800 text-sm font-bold px-3 py-1 rounded-full">Admin Mode</span>
         </div>
 
+        <!-- ALERTAS DE SISTEMA (NOVO) -->
+        <div th:if="${param.sucesso}" class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded shadow-sm" role="alert">
+            <p class="font-bold">Sucesso!</p>
+            <p>O produto foi excluído corretamente.</p>
+        </div>
+
+        <div th:if="${param.erro}" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded shadow-sm" role="alert">
+            <div class="flex items-center">
+                <i class="fas fa-exclamation-triangle mr-2"></i>
+                <div>
+                    <p class="font-bold">Não foi possível excluir</p>
+                    <p class="text-sm">Este produto já faz parte de pedidos realizados e não pode ser removido do histórico. Considere alterar o estoque para 0.</p>
+                </div>
+            </div>
+        </div>
+        <!-- FIM DOS ALERTAS -->
+
         <!-- Stats -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
             <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-pink-500">
@@ -66,7 +83,8 @@
                                 </td>
                                 <td class="px-4 py-3 text-right space-x-2">
                                     <a th:href="@{/admin/produtos/editar/{id}(id=${produto.id})}" class="text-blue-600 hover:underline font-semibold">Editar</a>
-                                    <a th:href="@{/admin/produtos/excluir/{id}(id=${produto.id})}" class="text-red-500 hover:underline" onclick="return confirm('Tem certeza?')">Excluir</a>
+                                    <!-- O link de exclusão permanece o mesmo, mas agora o controller trata o erro -->
+                                    <a th:href="@{/admin/produtos/excluir/{id}(id=${produto.id})}" class="text-red-500 hover:underline" onclick="return confirm('Tem certeza que deseja excluir este produto?')">Excluir</a>
                                 </td>
                             </tr>
                         </tbody>

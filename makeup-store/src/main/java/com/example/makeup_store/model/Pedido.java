@@ -3,7 +3,6 @@ package com.example.makeup_store.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,19 +16,18 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     
-    @ManyToOne // Relação: Muitos Pedidos para Um Cliente
-    @JoinColumn(name = "cliente_id") // Chave estrangeira
+    @ManyToOne // Muitos pedidos podem pertencer a UM cliente
+    @JoinColumn(name = "cliente_id")
     private Cliente cliente;
     
-    // Relação: Um Pedido para Muitos Itens
-    // cascade = ALL: Salva/deleta os itens junto com o pedido
-    // orphanRemoval = true: Remove itens que não estão mais na lista
+    // Um pedido tem MUITOS itens
+    // cascade = ALL: Se salvar/apagar pedido, salva/apaga itens
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemPedido> itens = new ArrayList<>();
     
     private String status;
     private LocalDateTime dataHora;
-    private Double total; // Armazenamos o total quando o pedido é fechado
+    private Double total;
 
     public Pedido(Cliente cliente) {
         this.cliente = cliente;
@@ -38,15 +36,15 @@ public class Pedido {
         this.total = 0.0;
     }
     
+    // Método auxiliar para adicionar item e manter a integridade da relação
+    public void adicionarItem(ItemPedido item) {
+        itens.add(item);
+        item.setPedido(this); // Vincula o item de volta ao pedido
+    }
+
     public double calcularTotal() {
         return itens.stream()
                     .mapToDouble(ItemPedido::getPrecoTotal)
                     .sum();
-    }
-    
-    // Método auxiliar para adicionar item e manter a relação bidirecional
-    public void adicionarItem(ItemPedido item) {
-        itens.add(item);
-        item.setPedido(this);
     }
 }
