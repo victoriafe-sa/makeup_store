@@ -108,3 +108,30 @@ O sistema inicializa automaticamente o banco de dados (arquivo `DataInitializer.
 
 1. Acesse: **[http://localhost:8080/h2-console](http://localhost:8080/h2-console)**
 2. Configure:
+
+```
+JDBC URL: jdbc:h2:mem:makeupdb
+User Name: sa
+Password: 
+```
+
+3. Clique em **Connect**.
+
+---
+
+## 📂 Estrutura do Projeto
+
+```
+makeup-store/
+│
+├── controller/       # Controladores MVC (Admin, Carrinho, Home, Perfil)
+├── model/            # Entidades JPA (Cliente, Produto, Pedido, ItemPedido) + Carrinho (Session Scope)
+├── repository/       # Interfaces Spring Data JPA
+├── service/          # Regras de negócio (Processamento de pedidos)
+├── config/           # Configurações de segurança (SecurityConfig)
+├── templates/        # Páginas HTML (Thymeleaf)
+└── ...
+```
+
+Desenvolvido como exemplo organizado de arquitetura **Spring Boot MVC**.
+
