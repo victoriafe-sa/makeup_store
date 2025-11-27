@@ -99,7 +99,15 @@ public class CarrinhoController {
         }
         
         pedido.setItens(itensPedido);
-        pedido.setTotal(carrinho.getTotal());
+        
+        // --- CORREÇÃO: SOMA DO FRETE ---
+        double valorFrete = 0.0;
+        if (frete != null && frete.contains("Expresso")) {
+            valorFrete = 15.00;
+        }
+        pedido.setTotal(carrinho.getTotal() + valorFrete);
+        // -------------------------------
+        
         pedidoRepository.save(pedido);
         
         carrinho.esvaziar();
