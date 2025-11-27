@@ -74,28 +74,19 @@ O projeto simula uma experiência real de compra online, incluindo:
 ### ✔️ Pré-requisitos
 
 * Java **JDK 17** ou superior instalado.
+* IDE (recomendado VS Code) com o **Extension Pack for Java** instalado.
 
 ---
 
 ### ▶️ Passo a Passo
 
 1. Clone ou baixe o repositório.
-2. Abra o terminal na pasta raiz do projeto (`makeup_store/makeup-store`).
-3. Execute a aplicação usando o **Maven Wrapper**:
-
-#### **Windows**
-
-```bash
-./mvnw.cmd spring-boot:run
-```
-
-#### **Linux/Mac**
-
-```bash
-./mvnw spring-boot:run
-```
-
-4. Acesse no navegador:
+2. Abra a pasta do projeto no seu IDE (VS Code).
+3. Aguarde o IDE carregar as dependências do Maven.
+4. Navegue até o arquivo principal da aplicação:
+   `src/main/java/com/example/makeup_store/MakeUpWorldApplication.java`
+5. Clique na opção **Run** ou **Debug** que aparece acima do método `main` (ou clique com o botão direito no arquivo e selecione *Run Java*).
+6. Aguarde a inicialização e acesse no navegador:
    **[http://localhost:8080](http://localhost:8080)**
 
 ---
@@ -107,7 +98,7 @@ O sistema inicializa automaticamente o banco de dados (arquivo `DataInitializer.
 | Perfil            | Email                                     | Senha  | Acesso                                        |
 | ----------------- | ----------------------------------------- | ------ | --------------------------------------------- |
 | **Administrador** | [admin@email.com](mailto:admin@email.com) | 123456 | Acesso total + Dashboard (`/admin/dashboard`) |
-| **Cliente**       | [user@email.com](mailto:user@email.com)   | 123456 | Compras e Perfil (`/perfil`)                  |
+| **Cliente** | [user@email.com](mailto:user@email.com)   | 123456 | Compras e Perfil (`/perfil`)                  |
 
 > Você também pode criar uma nova conta clicando em **Cadastrar** na tela de login.
 
@@ -117,29 +108,3 @@ O sistema inicializa automaticamente o banco de dados (arquivo `DataInitializer.
 
 1. Acesse: **[http://localhost:8080/h2-console](http://localhost:8080/h2-console)**
 2. Configure:
-
-```
-JDBC URL: jdbc:h2:mem:makeupdb
-User Name: sa
-Password: 
-```
-
-3. Clique em **Connect**.
-
----
-
-## 📂 Estrutura do Projeto
-
-```
-makeup-store/
-│
-├── controller/       # Controladores MVC (Admin, Carrinho, Home, Perfil)
-├── model/            # Entidades JPA (Cliente, Produto, Pedido, ItemPedido) + Carrinho (Session Scope)
-├── repository/       # Interfaces Spring Data JPA
-├── service/          # Regras de negócio (Processamento de pedidos)
-├── config/           # Configurações de segurança (SecurityConfig)
-├── templates/        # Páginas HTML (Thymeleaf)
-└── ...
-```
-
-Desenvolvido como exemplo organizado de arquitetura **Spring Boot MVC**.
